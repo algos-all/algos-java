@@ -5,26 +5,19 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
-public class QuickSort implements SortFunction {
+public class QuickSort {
     private static final Random rng = new Random();
 
-    @Override
-    public <T extends Comparable<? super T>> void sort(List<T> xs) {
-        sort(xs, 0, xs.size() - 1);
+    public static <T extends Comparable<? super T>> void sort(List<T> xs) {
+        sort(xs, T::compareTo, 0, xs.size() - 1);
     }
 
-    @Override
-    public <T> void sort(List<T> xs, Comparator<? super T> cmp) {
-        sort(xs, 0, xs.size() - 1, cmp);
+    public static <T> void sort(List<T> xs, Comparator<? super T> cmp) {
+        sort(xs, cmp, 0, xs.size() - 1);
     };
 
-    private static <T extends Comparable<? super T>>
-    void sort(List<T> xs, int fst, int lst) {
-        sort(xs, fst, lst, (x, y) -> x.compareTo(y));
-    }
-
     private static <T>
-    void sort(List<T> xs, int fst, int lst, Comparator<? super T> cmp) {
+    void sort(List<T> xs, Comparator<? super T> cmp, int fst, int lst) {
         if (fst >= lst) return;
 
         int i = fst, j = lst;
@@ -41,7 +34,7 @@ public class QuickSort implements SortFunction {
                 Collections.swap(xs, i++, j--);
         }
 
-        sort(xs, fst, j, cmp);
-        sort(xs, i, lst, cmp);
+        sort(xs, cmp, fst, j);
+        sort(xs, cmp, i, lst);
     }
 }
